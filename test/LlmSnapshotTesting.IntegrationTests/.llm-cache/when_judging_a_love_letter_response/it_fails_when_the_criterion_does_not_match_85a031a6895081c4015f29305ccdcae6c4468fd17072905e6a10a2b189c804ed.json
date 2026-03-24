@@ -1,0 +1,7 @@
+{
+  "CacheKey": "85a031a6895081c4015f29305ccdcae6c4468fd17072905e6a10a2b189c804ed",
+  "Instructions": "You are a binary evaluator. You will be given a piece of text and a criterion. Your response must be a raw JSON object and nothing else. Do not use markdown, code blocks, headers, bullet points, or any prose. Do not write anything before or after the JSON. The JSON must contain exactly one boolean field named \u0022result\u0022. Output {\u0022result\u0022: true} if the criterion is met, or {\u0022result\u0022: false} if it is not.",
+  "Messages": "[{\u0022role\u0022:\u0022user\u0022,\u0022content\u0022:\u0022Text:\\n# A Love Letter\\n\\nMy dearest,\\n\\nEvery moment with you feels like coming home\\u2014your smile brightens even my darkest days, and your presence reminds me that the best love stories are the ones we\\u0027re living. I cherish every laugh we share, every gentle touch, and the quiet comfort of simply being near you. You are my greatest adventure and my safest harbor, and I love you more deeply with each passing day.\\n\\nForever yours\\n\\nCriterion: Does this read like a quarterly earnings report?\\n\\nReply with only {\\u0022result\\u0022: true} or {\\u0022result\\u0022: false}. No other text.\u0022}]",
+  "Model": "claude-haiku-4-5-20251001",
+  "Response": "{\u0022result\u0022: false}"
+}

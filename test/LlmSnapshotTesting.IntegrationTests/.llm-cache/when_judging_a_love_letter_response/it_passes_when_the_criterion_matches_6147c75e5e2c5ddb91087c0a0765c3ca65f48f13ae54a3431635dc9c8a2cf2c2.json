@@ -1,0 +1,7 @@
+{
+  "CacheKey": "6147c75e5e2c5ddb91087c0a0765c3ca65f48f13ae54a3431635dc9c8a2cf2c2",
+  "Instructions": "You are an impartial evaluator. You will be given a piece of text and a criterion. Respond with a JSON object containing a single boolean field. Use {\u0022result\u0022: true} if the criterion is met, or {\u0022result\u0022: false} if it is not. Do not include any other fields, text, or explanation.",
+  "Messages": "[{\u0022role\u0022:\u0022user\u0022,\u0022content\u0022:\u0022Text:\\n# A Love Letter\\n\\nMy darling, every moment with you feels like coming home\\u2014your laugh is my favorite song, and your presence turns ordinary days into cherished memories. I love you not just for who you are, but for who I become when I\\u0027m with you. Forever yours.\\n\\nCriterion: Does this read like a love letter?\u0022}]",
+  "Model": "claude-haiku-4-5-20251001",
+  "Response": "# Analysis\n\n**Yes, this clearly reads like a love letter.**\n\n**Evidence:**\n\n-"
+}

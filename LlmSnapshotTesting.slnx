@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="src/LlmSnapshotTesting/LlmSnapshotTesting.csproj" />
   <Project Path="src/LlmSnapshotTesting.Anthropic/LlmSnapshotTesting.Anthropic.csproj" />
+  <Project Path="test/LlmSnapshotTesting.Tests/LlmSnapshotTesting.Tests.csproj" />
+  <Project Path="test/LlmSnapshotTesting.IntegrationTests/LlmSnapshotTesting.IntegrationTests.csproj" />
 </Solution>

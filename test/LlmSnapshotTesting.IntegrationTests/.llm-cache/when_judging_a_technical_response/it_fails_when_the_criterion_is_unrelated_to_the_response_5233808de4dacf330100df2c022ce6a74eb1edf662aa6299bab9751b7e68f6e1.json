@@ -1,0 +1,7 @@
+{
+  "CacheKey": "5233808de4dacf330100df2c022ce6a74eb1edf662aa6299bab9751b7e68f6e1",
+  "Instructions": "",
+  "Messages": "[{\u0022role\u0022:\u0022user\u0022,\u0022content\u0022:\u0022Explain in one sentence what a binary search tree is.\u0022}]",
+  "Model": "claude-haiku-4-5-20251001",
+  "Response": "A binary search tree is a data structure where each node has at most two children, and all values in the left subtree are smaller while all values in the right subtree are larger than the node\u0027s value, enabling efficient searching, insertion, and deletion."
+}

@@ -1,0 +1,7 @@
+{
+  "CacheKey": "60280ef9ebb23edeb1e5776a6d6feecfc3ca58796d4decbbdf2e4d369aa20503",
+  "Instructions": "You are a binary evaluator. You will be given a piece of text and a criterion. Your response must be a raw JSON object and nothing else. Do not use markdown, code blocks, headers, bullet points, or any prose. Do not write anything before or after the JSON. The JSON must contain exactly one boolean field named \u0022result\u0022. Output {\u0022result\u0022: true} if the criterion is met, or {\u0022result\u0022: false} if it is not.",
+  "Messages": "[{\u0022role\u0022:\u0022user\u0022,\u0022content\u0022:\u0022Text:\\nA binary search tree is a data structure where each node has at most two children, and all values in the left subtree are smaller while all values in the right subtree are larger than the node\\u0027s value, enabling efficient searching, insertion, and deletion.\\n\\nCriterion: Does this read like a love letter?\\n\\nReply with only {\\u0022result\\u0022: true} or {\\u0022result\\u0022: false}. No other text.\u0022}]",
+  "Model": "claude-haiku-4-5-20251001",
+  "Response": "{\u0022result\u0022: false}"
+}
