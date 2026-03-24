@@ -52,7 +52,27 @@ public abstract class BaseChatClientFixture
         => Path.Combine(GetProjectRoot(), ".llm-cache");
 
     protected static bool IsRunningInCi()
-        => !string.IsNullOrEmpty(
-            Environment.GetEnvironmentVariable("CI")
-        );
+    {
+        // Most CI platforms (GitHub Actions, GitLab CI, CircleCI, Travis CI, Bitbucket Pipelines, AppVeyor)
+        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI")))
+            return true;
+
+        // Azure Pipelines
+        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TF_BUILD")))
+            return true;
+
+        // Jenkins
+        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JENKINS_URL")))
+            return true;
+
+        // TeamCity
+        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+            return true;
+
+        // AWS CodeBuild
+        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CODEBUILD_BUILD_ID")))
+            return true;
+
+        return false;
+    }
 }
