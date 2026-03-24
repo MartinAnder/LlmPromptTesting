@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/LlmSnapshotTesting/LlmSnapshotTesting.csproj" />
+  <Project Path="src/LlmSnapshotTesting.Anthropic/LlmSnapshotTesting.Anthropic.csproj" />
+</Solution>

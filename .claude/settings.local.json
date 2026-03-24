@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit",
+      "Read",
+      "Write",
+      "Create",
+      "Update",
+      "WebSearch",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(dotnet:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push origin feature:*)",
+      "Bash(git push origin fix:*)",
+      "Bash(git branch:*)",
+      "Bash(git status:*)",
+      "Bash(git pull:*)",
+      "Bash(git diff:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(grep:*)",
+      "mcp__mcp-registry__search_mcp_registry",
+    ],
+    "deny": [
+      "Bash(rm -rf:*)"
+    ]
+  }
+}
