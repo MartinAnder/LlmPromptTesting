@@ -6,6 +6,8 @@ namespace LlmSnapshotTesting;
 
 public static class LlmAssert
 {
+    public static string? DefaultModelId { get; set; }
+
     private const string JudgeSystemPrompt =
         "You are a binary evaluator. "
         + "You will be given a piece of text and a criterion. "
@@ -43,7 +45,7 @@ public static class LlmAssert
         var options = new ChatOptions
         {
             Instructions = JudgeSystemPrompt,
-            ModelId = modelId,
+            ModelId = modelId ?? DefaultModelId,
             MaxOutputTokens = 20,
             ResponseFormat = ChatResponseFormat.Json,
         };
