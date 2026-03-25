@@ -2,13 +2,13 @@ using Microsoft.Extensions.AI;
 using Moq;
 using Xunit;
 
-namespace LlmSnapshotTesting.Tests.LlmAssert;
+namespace LlmPromptTesting.Tests.LlmAssert;
 
 public class when_a_default_model_id_is_configured : IDisposable
 {
-    private readonly string? _previousDefaultModelId = LlmSnapshotTesting.LlmAssert.DefaultModelId;
+    private readonly string? _previousDefaultModelId = LlmPromptTesting.LlmAssert.DefaultModelId;
 
-    public void Dispose() => LlmSnapshotTesting.LlmAssert.DefaultModelId = _previousDefaultModelId;
+    public void Dispose() => LlmPromptTesting.LlmAssert.DefaultModelId = _previousDefaultModelId;
 
     [Fact]
     public async Task it_uses_the_default_model_id_when_none_is_specified()
@@ -25,10 +25,10 @@ public class when_a_default_model_id_is_configured : IDisposable
                 (_, opts, _) => capturedOptions = opts)
             .ReturnsAsync(new ChatResponse(new ChatMessage(ChatRole.Assistant, "{\"result\": true}")));
 
-        LlmSnapshotTesting.LlmAssert.DefaultModelId = "my-default-model";
+        LlmPromptTesting.LlmAssert.DefaultModelId = "my-default-model";
 
         // Act
-        await LlmSnapshotTesting.LlmAssert.JudgeAsync(
+        await LlmPromptTesting.LlmAssert.JudgeAsync(
             judge.Object,
             text: "some text",
             criterion: "some criterion",
@@ -53,10 +53,10 @@ public class when_a_default_model_id_is_configured : IDisposable
                 (_, opts, _) => capturedOptions = opts)
             .ReturnsAsync(new ChatResponse(new ChatMessage(ChatRole.Assistant, "{\"result\": true}")));
 
-        LlmSnapshotTesting.LlmAssert.DefaultModelId = "my-default-model";
+        LlmPromptTesting.LlmAssert.DefaultModelId = "my-default-model";
 
         // Act
-        await LlmSnapshotTesting.LlmAssert.JudgeAsync(
+        await LlmPromptTesting.LlmAssert.JudgeAsync(
             judge.Object,
             text: "some text",
             criterion: "some criterion",

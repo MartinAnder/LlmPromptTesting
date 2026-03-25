@@ -3,7 +3,7 @@ using Moq;
 using Xunit;
 using Xunit.Sdk;
 
-namespace LlmSnapshotTesting.Tests.LlmAssert;
+namespace LlmPromptTesting.Tests.LlmAssert;
 
 public class when_judging_a_chat_response
 {
@@ -22,7 +22,7 @@ public class when_judging_a_chat_response
         var response = new ChatResponse(new ChatMessage(ChatRole.Assistant, "I love you dearly."));
 
         // Act & Assert
-        await LlmSnapshotTesting.LlmAssert.JudgeAsync(
+        await LlmPromptTesting.LlmAssert.JudgeAsync(
             judge.Object,
             response,
             "Does this read like a love letter?",
@@ -45,7 +45,7 @@ public class when_judging_a_chat_response
 
         // Act & Assert
         await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(
                 judge.Object,
                 response,
                 "Does this read like a love letter?",
@@ -68,7 +68,7 @@ public class when_judging_a_chat_response
         var response = new ChatResponse(new ChatMessage(ChatRole.Assistant, responseText));
 
         // Act
-        await LlmSnapshotTesting.LlmAssert.JudgeAsync(
+        await LlmPromptTesting.LlmAssert.JudgeAsync(
             judge.Object,
             response,
             "some criterion",

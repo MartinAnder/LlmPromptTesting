@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LlmSnapshotTesting.Anthropic\LlmSnapshotTesting.Anthropic.csproj" />
+    <ProjectReference Include="..\..\src\LlmPromptTesting.Anthropic\LlmPromptTesting.Anthropic.csproj" />
   </ItemGroup>
 
 </Project>

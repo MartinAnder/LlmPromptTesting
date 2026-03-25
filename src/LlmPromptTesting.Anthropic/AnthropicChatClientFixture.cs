@@ -1,6 +1,6 @@
 using Anthropic.SDK;
 
-namespace LlmSnapshotTesting.Anthropic;
+namespace LlmPromptTesting.Anthropic;
 
 public class AnthropicChatClientFixture : BaseChatClientFixture
 {

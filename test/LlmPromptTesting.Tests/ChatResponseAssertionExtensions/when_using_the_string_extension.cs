@@ -2,9 +2,9 @@ using Microsoft.Extensions.AI;
 using Moq;
 using Xunit;
 using Xunit.Sdk;
-using LlmSnapshotTesting;
+using LlmPromptTesting;
 
-namespace LlmSnapshotTesting.Tests.ChatResponseAssertionExtensions;
+namespace LlmPromptTesting.Tests.ChatResponseAssertionExtensions;
 
 public class when_using_the_string_extension
 {

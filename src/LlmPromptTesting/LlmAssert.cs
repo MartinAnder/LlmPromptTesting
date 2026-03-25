@@ -2,7 +2,7 @@ using System.Text.Json;
 using Microsoft.Extensions.AI;
 using Xunit;
 
-namespace LlmSnapshotTesting;
+namespace LlmPromptTesting;
 
 public static class LlmAssert
 {

@@ -3,7 +3,7 @@ using Moq;
 using Xunit;
 using Xunit.Sdk;
 
-namespace LlmSnapshotTesting.Tests.LlmAssert;
+namespace LlmPromptTesting.Tests.LlmAssert;
 
 public class when_the_text_exceeds_200_characters
 {
@@ -23,7 +23,7 @@ public class when_the_text_exceeds_200_characters
 
         // Act
         var exception = await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, longText, "some criterion", cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, longText, "some criterion", cancellationToken: TestContext.Current.CancellationToken));
 
         // Assert
         Assert.Contains(new string('a', 200) + "…", exception.Message);

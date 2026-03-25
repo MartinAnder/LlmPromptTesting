@@ -6,7 +6,7 @@ using Microsoft.Extensions.AI;
 using Xunit;
 using Xunit.Sdk;
 
-namespace LlmSnapshotTesting;
+namespace LlmPromptTesting;
 
 public class CachingChatClient(
     IChatClient? innerClient,

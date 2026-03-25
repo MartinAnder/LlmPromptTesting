@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/LlmPromptTesting/LlmPromptTesting.csproj" />
+  <Project Path="src/LlmPromptTesting.Anthropic/LlmPromptTesting.Anthropic.csproj" />
+  <Project Path="test/LlmPromptTesting.Tests/LlmPromptTesting.Tests.csproj" />
+  <Project Path="test/LlmPromptTesting.IntegrationTests/LlmPromptTesting.IntegrationTests.csproj" />
+</Solution>

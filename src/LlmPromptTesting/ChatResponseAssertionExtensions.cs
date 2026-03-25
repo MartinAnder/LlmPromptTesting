@@ -1,6 +1,6 @@
 using Microsoft.Extensions.AI;
 
-namespace LlmSnapshotTesting;
+namespace LlmPromptTesting;
 
 public static class ChatResponseAssertionExtensions
 {

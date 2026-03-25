@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageId>LlmSnapshotTesting.Anthropic</PackageId>
+        <PackageId>LlmPromptTesting.Anthropic</PackageId>
         <Version>1.0.0</Version>
         <Description>Record and replay LLM responses in xUnit v3 tests. Captures live IChatClient responses as snapshots and replays them locally — no API key needed after the first run.</Description>
     </PropertyGroup>
@@ -15,7 +15,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\LlmSnapshotTesting\LlmSnapshotTesting.csproj" />
+      <ProjectReference Include="..\LlmPromptTesting\LlmPromptTesting.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using Moq;
 using Xunit;
 using Xunit.Sdk;
 
-namespace LlmSnapshotTesting.Tests.LlmAssert;
+namespace LlmPromptTesting.Tests.LlmAssert;
 
 public class when_the_judge_returns_invalid_json
 {
@@ -27,7 +27,7 @@ public class when_the_judge_returns_invalid_json
 
         // Act & Assert
         await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class when_the_judge_returns_invalid_json
 
         // Act & Assert
         await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class when_the_judge_returns_invalid_json
 
         // Act & Assert
         await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class when_the_judge_returns_invalid_json
 
         // Act
         var exception = await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken));
 
         // Assert
         Assert.Contains(invalidResponse, exception.Message);

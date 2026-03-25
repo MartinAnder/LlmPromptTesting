@@ -2,7 +2,7 @@ using Microsoft.Extensions.AI;
 using Moq;
 using Xunit;
 
-namespace LlmSnapshotTesting.Tests.LlmAssert;
+namespace LlmPromptTesting.Tests.LlmAssert;
 
 public class when_the_judge_returns_yes
 {
@@ -25,7 +25,7 @@ public class when_the_judge_returns_yes
         var judge = CreateJudge("{\"result\": true}");
 
         // Act & Assert
-        await LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken);
+        await LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -35,6 +35,6 @@ public class when_the_judge_returns_yes
         var judge = CreateJudge("  {\"result\": true}\n");
 
         // Act & Assert
-        await LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken);
+        await LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, "some text", "some criterion", cancellationToken: TestContext.Current.CancellationToken);
     }
 }

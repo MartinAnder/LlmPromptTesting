@@ -3,7 +3,7 @@ using Moq;
 using Xunit;
 using Xunit.Sdk;
 
-namespace LlmSnapshotTesting.Tests.LlmAssert;
+namespace LlmPromptTesting.Tests.LlmAssert;
 
 public class when_the_judge_returns_no
 {
@@ -30,7 +30,7 @@ public class when_the_judge_returns_no
 
         // Act & Assert
         await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, Text, Criterion, cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, Text, Criterion, cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class when_the_judge_returns_no
 
         // Act
         var exception = await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, Text, Criterion, cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, Text, Criterion, cancellationToken: TestContext.Current.CancellationToken));
 
         // Assert
         Assert.Contains(Criterion, exception.Message);
@@ -55,7 +55,7 @@ public class when_the_judge_returns_no
 
         // Act
         var exception = await Assert.ThrowsAsync<FailException>(
-            () => LlmSnapshotTesting.LlmAssert.JudgeAsync(judge.Object, Text, Criterion, cancellationToken: TestContext.Current.CancellationToken));
+            () => LlmPromptTesting.LlmAssert.JudgeAsync(judge.Object, Text, Criterion, cancellationToken: TestContext.Current.CancellationToken));
 
         // Assert
         Assert.Contains(Text, exception.Message);
