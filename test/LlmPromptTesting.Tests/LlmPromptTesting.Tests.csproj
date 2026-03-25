@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -16,29 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LlmPromptTesting\LlmPromptTesting.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="build_out\es\" />
-    <Folder Include="build_out\it\" />
-    <Folder Include="build_out\ko\" />
-    <Folder Include="build_out\pt-BR\" />
-    <Folder Include="build_out\runtimes\win\lib\net6.0\" />
-    <Folder Include="build_out\runtimes\win\lib\net9.0\" />
-    <Folder Include="build_out\zh-Hans\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="build_out\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll" />
-    <None Remove="build_out\de\Microsoft.Testing.Platform.resources.dll" />
-    <None Remove="build_out\System.Text.Encodings.Web.dll" />
-    <None Remove="build_out\System.Diagnostics.EventLog.dll" />
-    <None Remove="build_out\Mono.Cecil.dll" />
-    <None Remove="build_out\Microsoft.Testing.Platform.dll" />
-    <None Remove="build_out\Microsoft.Testing.Extensions.TrxReport.Abstractions.dll" />
-    <None Remove="build_out\Microsoft.Extensions.Primitives.dll" />
-    <None Remove="build_out\Microsoft.Extensions.AI.dll" />
-    <None Remove="build_out\Microsoft.Extensions.AI.Abstractions.dll" />
   </ItemGroup>
 
 </Project>

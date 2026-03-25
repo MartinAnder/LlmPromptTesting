@@ -6,8 +6,12 @@
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
         <PackageId>LlmPromptTesting.Anthropic</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
+        <Authors>Martin Andersen</Authors>
         <Description>Record and replay LLM responses in xUnit v3 tests. Captures live IChatClient responses as snapshots and replays them locally — no API key needed after the first run.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/MartinAnder/LlmPromptTesting</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,6 +20,10 @@
     
     <ItemGroup>
       <ProjectReference Include="..\LlmPromptTesting\LlmPromptTesting.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../../README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
 </Project>
