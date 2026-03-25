@@ -1,0 +1,54 @@
+name: Publish NuGet
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Pack LlmPromptTesting
+        run: >
+          dotnet pack src/LlmPromptTesting/LlmPromptTesting.csproj
+          --no-build
+          --configuration Release
+          --output ./nupkgs
+
+      - name: Pack LlmPromptTesting.Anthropic
+        run: >
+          dotnet pack src/LlmPromptTesting.Anthropic/LlmPromptTesting.Anthropic.csproj
+          --no-build
+          --configuration Release
+          --output ./nupkgs
+
+      - name: Push to NuGet.org
+        run: >
+          dotnet nuget push ./nupkgs/*.nupkg
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
