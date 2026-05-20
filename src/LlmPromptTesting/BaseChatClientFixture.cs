@@ -11,24 +11,26 @@ public abstract class BaseChatClientFixture
         Func<string, IChatClient> chatClientFactory
     )
     {
-        var isCi = IsRunningInCi();
         var apiKey = apiKeyFactory();
 
-        if (isCi)
+        if (IsForcingApi())
         {
             if (apiKey is null)
-                throw new InvalidOperationException("apikey for IChatClient must be set in CI.");
+            {
+                throw new InvalidOperationException(
+                    "An API key must be set when LLM_PROMPT_TESTING_FORCE_API is enabled."
+                );
+            }
 
             ChatClient = chatClientFactory(apiKey);
+            return;
         }
-        else
-        {
-            IChatClient? innerChatClient = apiKey is not null
-                ? chatClientFactory(apiKey)
-                : null;
 
-            ChatClient = new CachingChatClient(innerChatClient, GetSnapshotsDirectory());
-        }
+        IChatClient? innerChatClient = apiKey is not null
+            ? chatClientFactory(apiKey)
+            : null;
+
+        ChatClient = new CachingChatClient(innerChatClient, GetSnapshotsDirectory());
     }
 
     protected static string GetProjectRoot()
@@ -51,28 +53,14 @@ public abstract class BaseChatClientFixture
     protected static string GetSnapshotsDirectory()
         => Path.Combine(GetProjectRoot(), ".llm-cache");
 
-    protected static bool IsRunningInCi()
+    protected static bool IsForcingApi()
     {
-        // Most CI platforms (GitHub Actions, GitLab CI, CircleCI, Travis CI, Bitbucket Pipelines, AppVeyor)
-        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI")))
-            return true;
+        var value = Environment.GetEnvironmentVariable("LLM_PROMPT_TESTING_FORCE_API");
 
-        // Azure Pipelines
-        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TF_BUILD")))
-            return true;
+        if (string.IsNullOrEmpty(value))
+            return false;
 
-        // Jenkins
-        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JENKINS_URL")))
-            return true;
-
-        // TeamCity
-        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
-            return true;
-
-        // AWS CodeBuild
-        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CODEBUILD_BUILD_ID")))
-            return true;
-
-        return false;
+        return value.Equals("true", StringComparison.OrdinalIgnoreCase)
+            || value == "1";
     }
 }

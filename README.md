@@ -10,7 +10,7 @@ LLM-powered features are hard to test. Real API calls are slow, expensive, and n
 
 1. **First run** — calls the real API, saves the response to a `.llm-cache/` directory as a JSON snapshot.
 2. **Subsequent runs** — replays the cached response instantly, with no API key required.
-3. **CI** — always calls the real API so snapshots stay fresh. Commit the cache to version control and local runs are free.
+3. **CI** — replays from the committed cache by default, so PRs cost zero credits. Set `LLM_PROMPT_TESTING_FORCE_API=true` (with an API key) to refresh snapshots against the real API.
 
 This gives you deterministic, fast, offline-capable tests that still validate real LLM output. It also ships an **LLM-as-a-judge** assertion (`LlmAssert.JudgeAsync`) so you can assert that responses meet human-readable criteria without brittle string matching.
 
@@ -155,20 +155,27 @@ await LlmAssert.JudgeAsync(
 
 ## How caching works
 
-| Scenario | API key available? | Cache exists? | Behavior |
+The same caching layer is used everywhere — including CI — so tests run against the committed `.llm-cache/` snapshots by default.
+
+| `LLM_PROMPT_TESTING_FORCE_API` | API key available? | Cache exists? | Behavior |
 |---|---|---|---|
-| Local dev | Yes | No | Calls API, saves snapshot |
-| Local dev | Yes | Yes | Returns cached response |
-| Local dev | No | Yes | Returns cached response |
-| Local dev | No | No | Test is skipped |
-| CI | Yes | — | Always calls API, saves snapshot |
+| unset | Yes | Yes | Returns cached response |
+| unset | Yes | No | Calls API, saves snapshot |
+| unset | No | Yes | Returns cached response |
+| unset | No | No | Test is skipped |
+| `true` | Yes | — | Always calls API, overwrites snapshot |
+| `true` | No | — | Throws — an API key is required |
 
 Cache keys are SHA-256 hashes of the system instructions, messages, and model ID. Changing any of these invalidates the cache and triggers a fresh API call.
 
 Snapshots are stored at `.llm-cache/{TestClass}/{TestMethod}_{hash}.json`.
 
-## CI detection
+## Forcing real API calls
 
-The package automatically detects these CI environments: GitHub Actions, GitLab CI, CircleCI, Travis CI, Bitbucket Pipelines, AppVeyor, Azure Pipelines, Jenkins, TeamCity, and AWS CodeBuild.
+Set `LLM_PROMPT_TESTING_FORCE_API=true` (or `1`) to bypass the cache entirely and hit the live `IChatClient`. Use this when you intentionally want to re-record snapshots against the real API — for example, on a scheduled CI run or after a prompt change.
 
-In CI, the live `IChatClient` is always used (no caching layer), so your tests validate against real, up-to-date LLM output.
+```bash
+LLM_PROMPT_TESTING_FORCE_API=true ANTHROPIC_API_KEY=sk-... dotnet test
+```
+
+When the flag is not set, CI behaves exactly like local development: replays from cache, costs nothing in API credits, and only consumes credits if a key is present *and* a cache entry is missing.
