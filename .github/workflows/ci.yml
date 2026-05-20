@@ -2,11 +2,17 @@ name: CI
 
 on:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      force_api:
+        description: "Force real API calls and refresh snapshots (consumes credits)"
+        type: boolean
+        default: false
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.repo.fork == false
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false
 
     steps:
       - name: Checkout
@@ -29,4 +35,5 @@ jobs:
       - name: Test
         run: dotnet test --no-build --configuration Release
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LLM_PROMPT_TESTING_FORCE_API: ${{ inputs.force_api && 'true' || '' }}
+          ANTHROPIC_API_KEY: ${{ inputs.force_api && secrets.ANTHROPIC_API_KEY || '' }}
