@@ -10,7 +10,9 @@ namespace LlmPromptTesting;
 
 public class CachingChatClient(
     IChatClient? innerClient,
-    string snapshotDirectory
+    string snapshotDirectory,
+    bool replayOnly = false,
+    ISnapshotCommitter? snapshotCommitter = null
 ) : IChatClient
 {
     private static readonly JsonSerializerOptions WriteOptions = new()
@@ -38,6 +40,11 @@ public class CachingChatClient(
                 await File.ReadAllTextAsync(snapshotPath, cancellationToken)
             );
             return new ChatResponse(new ChatMessage(ChatRole.Assistant, cached!.Response));
+        }
+
+        if (replayOnly)
+        {
+            throw new SnapshotNotFoundException(cacheKey, snapshotPath);
         }
 
         if (innerClient is null)
@@ -69,6 +76,11 @@ public class CachingChatClient(
             JsonSerializer.Serialize(envelope, WriteOptions),
             cancellationToken
         );
+
+        if (snapshotCommitter is not null)
+        {
+            await snapshotCommitter.CommitAsync(snapshotPath, cancellationToken);
+        }
 
         return response;
     }

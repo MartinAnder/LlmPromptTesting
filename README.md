@@ -170,6 +170,8 @@ Cache keys are SHA-256 hashes of the system instructions, messages, and model ID
 
 Snapshots are stored at `.llm-cache/{TestClass}/{TestMethod}_{hash}.json`.
 
+Two optional environment variables tune this behavior further: `LLM_PROMPT_TESTING_REPLAY_ONLY` (a strict offline mode for CI) and `LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS` (auto-commit freshly recorded snapshots locally). Both are described below.
+
 ## Forcing real API calls
 
 Set `LLM_PROMPT_TESTING_FORCE_API=true` (or `1`) to bypass the cache entirely and hit the live `IChatClient`. Use this when you intentionally want to re-record snapshots against the real API — for example, on a scheduled CI run or after a prompt change.
@@ -179,3 +181,30 @@ LLM_PROMPT_TESTING_FORCE_API=true ANTHROPIC_API_KEY=sk-... dotnet test
 ```
 
 When the flag is not set, CI behaves exactly like local development: replays from cache, costs nothing in API credits, and only consumes credits if a key is present *and* a cache entry is missing.
+
+## Strict replay-only mode
+
+Set `LLM_PROMPT_TESTING_REPLAY_ONLY=true` (or `1`) to forbid live API calls entirely. On a cache **hit** the snapshot is replayed as usual; on a **miss** the call throws a `SnapshotNotFoundException` — a hard test failure — *before* any `IChatClient` is consulted, so no network request is made and no API key is needed.
+
+This is the mode to set in CI. It guarantees a pull request can never spend API credits, and it turns a stale or missing snapshot into a loud red failure naming the cache key, instead of a silent live call or a skipped test:
+
+```bash
+LLM_PROMPT_TESTING_REPLAY_ONLY=true dotnet test
+```
+
+`LLM_PROMPT_TESTING_REPLAY_ONLY` is mutually exclusive with `LLM_PROMPT_TESTING_FORCE_API` and `LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS` (replay-only never records, so there is nothing to force or commit); enabling it alongside either throws at fixture construction.
+
+| `LLM_PROMPT_TESTING_REPLAY_ONLY` | Cache exists? | Behavior |
+|---|---|---|
+| `true` | Yes | Returns cached response (no API key needed) |
+| `true` | No | Throws `SnapshotNotFoundException` — no API call |
+
+## Auto-committing recorded snapshots
+
+Set `LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS=true` (or `1`) so that whenever a snapshot is recorded on a cache miss, it is immediately `git add`-ed and committed (scoped to just that file). This stops a freshly recorded snapshot from being accidentally left out of a commit and resurfacing as a missing-snapshot failure in CI later.
+
+It is best-effort: if `git` is unavailable or the snapshot directory is not inside a repository, recording still succeeds and nothing is committed. Use it locally while re-recording after a prompt change:
+
+```bash
+LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS=true ANTHROPIC_API_KEY=sk-... dotnet test
+```
