@@ -11,6 +11,26 @@ public abstract class BaseChatClientFixture
         Func<string, IChatClient> chatClientFactory
     )
     {
+        if (IsReplayOnly() && (IsForcingApi() || IsCommittingMissingSnapshots()))
+        {
+            throw new InvalidOperationException(
+                "LLM_PROMPT_TESTING_REPLAY_ONLY cannot be combined with "
+                + "LLM_PROMPT_TESTING_FORCE_API or "
+                + "LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS: replay-only "
+                + "mode never records, so there is nothing to force or commit."
+            );
+        }
+
+        if (IsReplayOnly())
+        {
+            ChatClient = new CachingChatClient(
+                innerClient: null,
+                GetSnapshotsDirectory(),
+                replayOnly: true
+            );
+            return;
+        }
+
         var apiKey = apiKeyFactory();
 
         if (IsForcingApi())
@@ -30,7 +50,13 @@ public abstract class BaseChatClientFixture
             ? chatClientFactory(apiKey)
             : null;
 
-        ChatClient = new CachingChatClient(innerChatClient, GetSnapshotsDirectory());
+        ChatClient = new CachingChatClient(
+            innerChatClient,
+            GetSnapshotsDirectory(),
+            snapshotCommitter: IsCommittingMissingSnapshots()
+                ? new GitSnapshotCommitter()
+                : null
+        );
     }
 
     protected static string GetProjectRoot()
@@ -54,8 +80,17 @@ public abstract class BaseChatClientFixture
         => Path.Combine(GetProjectRoot(), ".llm-cache");
 
     protected static bool IsForcingApi()
+        => IsEnabled("LLM_PROMPT_TESTING_FORCE_API");
+
+    protected static bool IsReplayOnly()
+        => IsEnabled("LLM_PROMPT_TESTING_REPLAY_ONLY");
+
+    protected static bool IsCommittingMissingSnapshots()
+        => IsEnabled("LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS");
+
+    private static bool IsEnabled(string variableName)
     {
-        var value = Environment.GetEnvironmentVariable("LLM_PROMPT_TESTING_FORCE_API");
+        var value = Environment.GetEnvironmentVariable(variableName);
 
         if (string.IsNullOrEmpty(value))
             return false;
