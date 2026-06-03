@@ -168,7 +168,10 @@ The same caching layer is used everywhere — including CI — so tests run agai
 
 Cache keys are SHA-256 hashes of the system instructions, messages, and model ID. Changing any of these invalidates the cache and triggers a fresh API call.
 
-Snapshots are stored at `.llm-cache/{TestClass}/{TestMethod}_{hash}.json`.
+Snapshots are stored at `.llm-cache/{TestClass}/{TestMethod}_{hash}.json`. The class and method
+come from the test's xUnit metadata, and any `[Theory]` arguments in the file name are rendered
+under the invariant culture — so the path is identical on every machine and a `[InlineData]` value
+such as `0.45` is written as `0.45…` (period) regardless of the runner's locale.
 
 Two optional environment variables tune this behavior further: `LLM_PROMPT_TESTING_REPLAY_ONLY` (a strict offline mode for CI) and `LLM_PROMPT_TESTING_COMMIT_MISSING_SNAPSHOTS` (auto-commit freshly recorded snapshots locally). Both are described below.
 

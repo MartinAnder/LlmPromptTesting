@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -5,6 +6,7 @@ using System.Text.Json;
 using Microsoft.Extensions.AI;
 using Xunit;
 using Xunit.Sdk;
+using Xunit.v3;
 
 namespace LlmPromptTesting;
 
@@ -105,7 +107,27 @@ public class CachingChatClient(
 
     private static string BuildFileName(string cacheKey)
     {
-        var testName = TestContext.Current.Test?.TestDisplayName;
+        var test = TestContext.Current.Test;
+
+        if (test is null)
+            return $"{cacheKey}.json";
+
+        // Derive the class and method from xUnit metadata and re-render the
+        // arguments under the invariant culture: a '.' inside an argument no
+        // longer splits the path, and a double like 0.45 stays "0.45..." on
+        // every locale rather than "0,45..." on a comma-decimal machine.
+        if (test is IXunitTest xunitTest
+            && test.TestCase is IXunitTestCase xunitTestCase
+            && !string.IsNullOrEmpty(xunitTestCase.TestClassSimpleName))
+        {
+            var label = BuildInvariantDisplayLabel(xunitTestCase, xunitTest);
+            return Path.Combine(
+                xunitTestCase.TestClassSimpleName,
+                $"{label}_{cacheKey}.json"
+            );
+        }
+
+        var testName = test.TestDisplayName;
 
         if (string.IsNullOrEmpty(testName))
             return $"{cacheKey}.json";
@@ -115,6 +137,35 @@ public class CachingChatClient(
         var methodName = parts[^1];
 
         return Path.Combine(className, $"{methodName}_{cacheKey}.json");
+    }
+
+    private static string BuildInvariantDisplayLabel(
+        IXunitTestCase testCase,
+        IXunitTest test
+    )
+    {
+        // Argument-less tests pass null (not an empty array) so GetDisplayName
+        // returns the bare method name with no "()" — the form xUnit uses for
+        // a [Fact].
+        var arguments = test.TestMethodArguments is { Length: > 0 }
+            ? test.TestMethodArguments
+            : null;
+
+        var previousCulture = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            return testCase.TestMethod.GetDisplayName(
+                testCase.TestMethodName,
+                label: null,
+                arguments,
+                methodGenericTypes: null
+            );
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previousCulture;
+        }
     }
 
     private static string ComputeCacheKey(
